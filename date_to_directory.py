@@ -16,34 +16,63 @@ def valid_date(dates):
         raise argparse.ArgumentTypeError(msg)
 
 
-def check_valid_startdate_enddate(start, end):
+def check_valid_start_end(start, end):
     if start <= end:
         return True
     else:
         return False
 
 
-def create_directory(start, end):
-    delta = end-start
-    print (delta)
+def check_leapyear(year):
+    if (year % 400 == 0) or (year % 4 == 0 and year % 100 != 0):
+        return True
+    else:
+        return False
 
+
+def create_directory(year, month, day):
+    os.makedirs("{}/{}/{}".format(year, month, day), exist_ok=True)
+
+
+def parse_year_month_day(start, end):
     start_year, start_month, start_day = str(start).split("-")
     end_year, end_month, end_day = str(end).split("-")
+    months = ["January", "February", "March", "April", "May", "June", "July",
+              "August", "September", "October", "November", "December"]
+    maxDates = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-    for year in range(int(start_year), int(end_year)+1):
-        os.makedirs("{}".format(year), exist_ok=True)
+    year_counter = int(start_year)
+    month_counter = int(start_month)
+    day_counter = int(start_day)
 
+    if start == end:
+        create_directory(year_counter, months[month_counter-1], day_counter)
+        return
 
-#     start_year, start_month, start_day = start.split("-")
-#     end_year, end_month, end_day = end.split("-")
-#
-#     year_directory = []
-#
-#     path = 'Users/ssamal/Documents/Practice/Python/' \
-#            'python_virtual_environment/python_argparse'
-#
-#     for year in range(int(start_year), int(end_year)+1):
-#         for month in range(int(start_month), int(end_month)+1):
+    while year_counter <= int(end_year) and month_counter <= int(end_month):
+
+        if month_counter == int(end_month) and day_counter < int(end_day):
+            create_directory(year_counter, months[month_counter-1],day_counter)
+            day_counter += 1
+        elif month_counter == int(end_month) and day_counter == int(end_day):
+            create_directory(year_counter, months[month_counter - 1],
+                             day_counter)
+            return
+        else:
+            create_directory(year_counter, months[month_counter-1],day_counter)
+            day_counter += 1
+
+        if day_counter > maxDates[month_counter-1]:
+            if month_counter == 2 and check_leapyear(year_counter):
+                create_directory(year_counter, months[month_counter-1],
+                                 day_counter)
+
+            month_counter += 1
+            day_counter = 1
+
+        if month_counter > 12:
+            year_counter += 1
+            month_counter = 1
 
 
 def main():
@@ -66,10 +95,10 @@ def main():
     start = datetime.strptime(str(args.start_date), '%Y-%m-%d').date()
     end = datetime.strptime(str(args.end_date), '%Y-%m-%d').date()
 
-    print(start,"\n",end)
+    print(start, "\n", end)
 
-    if check_valid_startdate_enddate(start, end):
-         create_directory(start, end)
+    if check_valid_start_end(start, end):
+        parse_year_month_day(start, end)
     else:
         print("Please provide a start date older to end date")
 
