@@ -6,6 +6,7 @@
 import argparse
 from datetime import datetime
 import os
+import touch
 
 
 def valid_date(dates):
@@ -30,11 +31,18 @@ def check_leapyear(year):
         return False
 
 
-def create_directory(year, month, day):
-    os.makedirs("{}/{}/{}".format(year, month, day), exist_ok=True)
+def create_directory(year, month, day, option):
+    if option == 'yes':
+        file = ".make.txt"
+        os.makedirs("{}/{}/{}".format(year, month, day), exist_ok=True)
+        touch.touch(os.path.join(str(year), file))
+        touch.touch(os.path.join(str(year), str(month), file))
+        touch.touch(os.path.join(str(year), str(month), str(day), file))
+    else:
+        os.makedirs("{}/{}/{}".format(year, month, day), exist_ok=True)
 
 
-def parse_year_month_day(start, end):
+def parse_year_month_day(start, end, option):
     start_year, start_month, start_day = str(start).split("-")
     end_year, end_month, end_day = str(end).split("-")
     months = ["January", "February", "March", "April", "May", "June", "July",
@@ -52,20 +60,20 @@ def parse_year_month_day(start, end):
     while year_counter <= int(end_year) and month_counter <= int(end_month):
 
         if month_counter == int(end_month) and day_counter < int(end_day):
-            create_directory(year_counter, months[month_counter-1],day_counter)
+            create_directory(year_counter, months[month_counter-1],day_counter, option)
             day_counter += 1
         elif month_counter == int(end_month) and day_counter == int(end_day):
             create_directory(year_counter, months[month_counter - 1],
-                             day_counter)
+                             day_counter, option)
             return
         else:
-            create_directory(year_counter, months[month_counter-1],day_counter)
+            create_directory(year_counter, months[month_counter-1],day_counter, option)
             day_counter += 1
 
         if day_counter > maxDates[month_counter-1]:
             if month_counter == 2 and check_leapyear(year_counter):
                 create_directory(year_counter, months[month_counter-1],
-                                 day_counter)
+                                 day_counter, option)
 
             month_counter += 1
             day_counter = 1
@@ -90,15 +98,27 @@ def main():
                         help='provide end date in the YYYY-MM-DD format',
                         default=None,
                         )
+
+    parser.add_argument('-o',
+                        '--option',
+                        help='Do you want to create a '
+                             'make file inside each directory?',
+                        action='store',
+                        # type="yes",
+                        dest='option',
+                        choices=['yes', 'no'],
+                        )
     args = parser.parse_args()
 
     start = datetime.strptime(str(args.start_date), '%Y-%m-%d').date()
     end = datetime.strptime(str(args.end_date), '%Y-%m-%d').date()
+    # if args.option:
 
-    print(start, "\n", end)
+    print(start)
+    print(end)
 
     if check_valid_start_end(start, end):
-        parse_year_month_day(start, end)
+        parse_year_month_day(start, end, args.option)
     else:
         print("Please provide a start date older to end date")
 
