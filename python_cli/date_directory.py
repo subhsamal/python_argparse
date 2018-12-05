@@ -1,14 +1,10 @@
-# The goal of this program is to create nested directory as per the\
-# input provided by the user.
-# Input is in the form of startdate and enddate
-# Format of the date is YYYY-MM-DD
-
-import argparse
-from datetime import datetime
-import os
 import touch
+import os
+from datetime import datetime
+import argparse
 
 
+# verify date is in the format YYYY-MM-DD
 def valid_date(dates):
     try:
         return datetime.strptime(dates, "%Y-%m-%d").date()
@@ -17,6 +13,7 @@ def valid_date(dates):
         raise argparse.ArgumentTypeError(msg)
 
 
+# verify end date is same as or greater than start date
 def check_valid_start_end(start, end):
     if start <= end:
         return True
@@ -24,6 +21,7 @@ def check_valid_start_end(start, end):
         return False
 
 
+# check leap year
 def check_leapyear(year):
     if (year % 400 == 0) or (year % 4 == 0 and year % 100 != 0):
         return True
@@ -31,6 +29,8 @@ def check_leapyear(year):
         return False
 
 
+# create directory based on user input. If user opts for .make file, then
+# create it within each of the folders created.
 def create_directory(year, month, day, option):
     if option == 'yes':
         file = ".make.txt"
@@ -42,86 +42,58 @@ def create_directory(year, month, day, option):
         os.makedirs("{}/{}/{}".format(year, month, day), exist_ok=True)
 
 
+# parse the year, month and day from given start and end dates. Also convert
+# the MM to MONTH (i:e 01 to January)
 def parse_year_month_day(start, end, option):
     start_year, start_month, start_day = str(start).split("-")
     end_year, end_month, end_day = str(end).split("-")
     months = ["January", "February", "March", "April", "May", "June", "July",
               "August", "September", "October", "November", "December"]
-    maxDates = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    max_dates = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
+    # set the year, month and day counters to the start year, month and day
     year_counter = int(start_year)
     month_counter = int(start_month)
     day_counter = int(start_day)
 
     if start == end:
-        create_directory(year_counter, months[month_counter-1], day_counter)
+        create_directory(year_counter, months[month_counter - 1], day_counter)
         return
 
+    # continue the loop until year counter is not greater or with in a year
+    # month counter is not greater
     while year_counter <= int(end_year) and month_counter <= int(end_month):
-
+        # increase the day counter until it is not the end day
         if month_counter == int(end_month) and day_counter < int(end_day):
-            create_directory(year_counter, months[month_counter-1],day_counter, option)
+            create_directory(year_counter, months[month_counter - 1],
+                             day_counter, option)
             day_counter += 1
+        # when day counter is same as end date, create directory and exit.
         elif month_counter == int(end_month) and day_counter == int(end_day):
             create_directory(year_counter, months[month_counter - 1],
                              day_counter, option)
+            print('############ Congratulations!! '
+                  'Your directory structure is ready. ###########')
             return
+        # continue the loop until the exit criteria is met
         else:
-            create_directory(year_counter, months[month_counter-1],day_counter, option)
+            create_directory(year_counter, months[month_counter - 1],
+                             day_counter, option)
             day_counter += 1
+            pass
 
-        if day_counter > maxDates[month_counter-1]:
+        # create 29th day directory when it is a leap year
+        if day_counter > max_dates[month_counter - 1]:
             if month_counter == 2 and check_leapyear(year_counter):
-                create_directory(year_counter, months[month_counter-1],
+                create_directory(year_counter, months[month_counter - 1],
                                  day_counter, option)
-
+            # increase month counter and set day to start of the month
             month_counter += 1
             day_counter = 1
 
+        # increase year counter and set month to start of the year
         if month_counter > 12:
             year_counter += 1
             month_counter = 1
-
-
-def main():
-    parser = argparse.ArgumentParser(
-        description='Program to create nested directory based on input'
-    )
-
-    parser.add_argument('start_date',
-                        type=valid_date,
-                        help='provide start date in the YYYY-MM-DD format',
-                        default=None,
-                        )
-    parser.add_argument('end_date',
-                        type=valid_date,
-                        help='provide end date in the YYYY-MM-DD format',
-                        default=None,
-                        )
-
-    parser.add_argument('-o',
-                        '--option',
-                        help='Do you want to create a '
-                             'make file inside each directory?',
-                        action='store',
-                        # type="yes",
-                        dest='option',
-                        choices=['yes', 'no'],
-                        )
-    args = parser.parse_args()
-
-    start = datetime.strptime(str(args.start_date), '%Y-%m-%d').date()
-    end = datetime.strptime(str(args.end_date), '%Y-%m-%d').date()
-    # if args.option:
-
-    print(start)
-    print(end)
-
-    if check_valid_start_end(start, end):
-        parse_year_month_day(start, end, args.option)
-    else:
-        print("Please provide a start date older to end date")
-
-
-if __name__ == '__main__':
-    main()
+    print('######### Congratulations!! Your directory structure is ready.')
+    return
