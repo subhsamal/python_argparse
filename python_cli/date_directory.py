@@ -73,7 +73,7 @@ def parse_year_month_day(start, end, option):
             create_directory(year_counter, months[month_counter - 1],
                              day_counter, option)
             print('############ Congratulations!! '
-                  'Your directory structure is ready. ###########')
+                  'Your directory structure is ready. ############')
             return
         # continue the loop until the exit criteria is met
         else:
@@ -95,5 +95,4 @@ def parse_year_month_day(start, end, option):
         if month_counter > 12:
             year_counter += 1
             month_counter = 1
-    print('######### Congratulations!! Your directory structure is ready.')
-    return
+
