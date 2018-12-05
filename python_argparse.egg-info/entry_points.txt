@@ -1,0 +1,3 @@
+[console_scripts]
+python_argparse = python_cli.__main__:main
+
