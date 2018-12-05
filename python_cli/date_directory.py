@@ -95,5 +95,4 @@ def parse_year_month_day(start, end, option):
         if month_counter > 12:
             year_counter += 1
             month_counter = 1
-    print('######### Congratulations!! Your directory structure is ready.')
-    return
+
