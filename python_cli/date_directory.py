@@ -5,16 +5,16 @@ import argparse
 
 
 # verify date is in the format YYYY-MM-DD
-def valid_date(dates):
+def valid_date(date: str) -> datetime:
     try:
-        return datetime.strptime(dates, "%Y-%m-%d").date()
+        return datetime.strptime(date, "%m-%d-%Y").date()
     except ValueError:
-        msg = "Not a valid format for date: '{0}'.".format(dates)
+        msg = "Not a valid format for date: '{0}'.".format(date)
         raise argparse.ArgumentTypeError(msg)
 
 
 # verify end date is same as or greater than start date
-def check_valid_start_end(start, end):
+def check_valid_start_end(start: datetime, end: datetime) -> bool:
     if start <= end:
         return True
     else:
@@ -22,7 +22,7 @@ def check_valid_start_end(start, end):
 
 
 # check leap year
-def check_leapyear(year):
+def check_leapyear(year: int) -> bool:
     if (year % 400 == 0) or (year % 4 == 0 and year % 100 != 0):
         return True
     else:
@@ -31,7 +31,7 @@ def check_leapyear(year):
 
 # create directory based on user input. If user opts for .make file, then
 # create it within each of the folders created.
-def create_directory(year, month, day, option):
+def create_directory(year: int, month: str, day: int, option: str) -> None:
     if option == 'yes':
         file = ".make.txt"
         os.makedirs("{}/{}/{}".format(year, month, day), exist_ok=True)
@@ -44,7 +44,7 @@ def create_directory(year, month, day, option):
 
 # parse the year, month and day from given start and end dates. Also convert
 # the MM to MONTH (i:e 01 to January)
-def parse_year_month_day(start, end, option):
+def parse_year_month_day(start: datetime, end: datetime, option: str) -> None:
     start_year, start_month, start_day = str(start).split("-")
     end_year, end_month, end_day = str(end).split("-")
     months = ["January", "February", "March", "April", "May", "June", "July",
