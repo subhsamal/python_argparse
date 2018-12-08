@@ -31,6 +31,7 @@ A package can have multiple subpackages and directories.
 
 A package can be install by running the following command within the directory
 containing the package: pip3 install -e .
+
 In this case I have created a shell script named install.sh containing the above
 command. Install the package with ./install.sh (check for permission)
 
@@ -39,3 +40,17 @@ command. Install the package with ./install.sh (check for permission)
 setup.py contains information about a package, such as package name, author,
 license, version and most importantly entry point.
 
+##### To use the package as an API ######
+from datetime import datetime
+from python_cli import date_directory as dd
+start = 'YYYY-MM-DD'
+end = 'YYYY-MM-DD'
+dd.parse_year_month_day(datetime.strptime(start, '%Y-%m-%d').date(),
+datetime.strptime(end, '%Y-%m-%d').date(), 'yes')
+
+################ Python type hinting ################
+Reference: https://stackoverflow.com/questions/15300550/
+python-return-return-none-and-no-return-at-all/15300733
+
+########### How unittest.main() works ###########
+Reference: http://elbenshira.com/blog/behind-pythons-unittest-main/
