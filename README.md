@@ -41,12 +41,13 @@ setup.py contains information about a package, such as package name, author,
 license, version and most importantly entry point.
 
 ##### To use the package as an API ######
+python3
 from datetime import datetime
 from python_cli import date_directory as dd
-start = 'YYYY-MM-DD'
-end = 'YYYY-MM-DD'
-dd.parse_year_month_day(datetime.strptime(start, '%Y-%m-%d').date(),
-datetime.strptime(end, '%Y-%m-%d').date(), 'yes')
+start = 'MM-DD-YYYY'
+end = 'MM-DD-YYYY'
+dd.parse_year_month_day(datetime.strptime(start, '%m-%d-%Y').date(),
+datetime.strptime(end, '%m-%d-%Y').date(), 'yes')
 
 ################ Python type hinting ################
 Reference: https://stackoverflow.com/questions/15300550/
@@ -54,3 +55,5 @@ python-return-return-none-and-no-return-at-all/15300733
 
 ########### How unittest.main() works ###########
 Reference: http://elbenshira.com/blog/behind-pythons-unittest-main/
+To run the unittest module from command line:
+python3 -m unittest test/test_pythoncli.py

@@ -75,8 +75,8 @@ def parse_year_month_day(start: datetime, end: datetime, option: str) -> None:
             print('############ Congratulations!! '
                   'Your directory structure is ready. ############')
             return
-        # continue the loop until the exit criteria is met
         else:
+            # continue the loop until the exit criteria is met
             create_directory(year_counter, months[month_counter - 1],
                              day_counter, option)
             day_counter += 1
