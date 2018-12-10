@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#! /usr/bin/env python3
 
 import argparse
 from datetime import datetime
@@ -16,12 +16,12 @@ def create_parser():
     # add positional arguments to the parser object from command line
     arg_parser.add_argument('start_date',
                             type=date_directory.valid_date,
-                            help='provide start date in the YYYY-MM-DD format',
+                            help='provide start date in the MM-DD-YYYY format',
                             default=None,
                             )
     arg_parser.add_argument('end_date',
                             type=date_directory.valid_date,
-                            help='provide end date in the YYYY-MM-DD format',
+                            help='provide end date in the MM-DD-YYYY format',
                             default=None,
                             )
     # add optional argument to the parser object from command line
