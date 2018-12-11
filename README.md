@@ -62,3 +62,7 @@ python-return-return-none-and-no-return-at-all/15300733
 Reference: http://elbenshira.com/blog/behind-pythons-unittest-main/
 To run the unittest module from command line:
 python3 -m unittest test/test_pythoncli.py
+
+
+############ Python Egg ################
+Reference - https://python101.pythonlibrary.org/chapter38_eggs.html
