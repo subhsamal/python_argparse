@@ -52,6 +52,8 @@ end = 'MM-DD-YYYY'
 dd.parse_year_month_day(datetime.strptime(start, '%m-%d-%Y').date(),
 datetime.strptime(end, '%m-%d-%Y').date(), 'yes')
 
+dd.check_leapyear('given year')
+
 ################ Python type hinting ################
 Reference: https://stackoverflow.com/questions/15300550/
 python-return-return-none-and-no-return-at-all/15300733
