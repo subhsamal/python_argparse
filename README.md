@@ -35,6 +35,9 @@ containing the package: pip3 install -e .
 In this case I have created a shell script named install.sh containing the above
 command. Install the package with ./install.sh (check for permission)
 
+To uninstall the package, use command:
+pip uninstall <package name>
+
 ########## What is setup.py #################
 
 setup.py contains information about a package, such as package name, author,

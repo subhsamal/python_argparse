@@ -1,0 +1,9 @@
+README.md
+python_cli/__init__.py
+python_cli/__main__.py
+python_cli/date_directory.py
+python_cli.egg-info/PKG-INFO
+python_cli.egg-info/SOURCES.txt
+python_cli.egg-info/dependency_links.txt
+python_cli.egg-info/entry_points.txt
+python_cli.egg-info/top_level.txt

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from python_cli.date_directory import *
+from date_directory import *
 import unittest
 
 
