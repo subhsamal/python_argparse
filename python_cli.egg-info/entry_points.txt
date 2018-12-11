@@ -1,3 +1,0 @@
-[console_scripts]
-python_cli = python_cli.__main__:main
-
