@@ -46,7 +46,7 @@ license, version and most importantly entry point.
 ##### To use the package as an API ######
 python3
 from datetime import datetime
-from python_cli import date_directory as dd
+import date_directory as dd
 start = 'MM-DD-YYYY'
 end = 'MM-DD-YYYY'
 dd.parse_year_month_day(datetime.strptime(start, '%m-%d-%Y').date(),
