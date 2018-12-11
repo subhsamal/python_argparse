@@ -64,12 +64,14 @@ def parse_year_month_day(start: datetime, end: datetime, option: str) -> None:
     # month counter is not greater
     while year_counter <= int(end_year) and month_counter <= int(end_month):
         # increase the day counter until it is not the end day
-        if month_counter == int(end_month) and day_counter < int(end_day):
+        if year_counter == int(end_year) and month_counter == int(end_month) \
+                and day_counter < int(end_day):
             create_directory(year_counter, months[month_counter - 1],
                              day_counter, option)
             day_counter += 1
         # when day counter is same as end date, create directory and exit.
-        elif month_counter == int(end_month) and day_counter == int(end_day):
+        elif year_counter == int(end_year) and month_counter == int(end_month) \
+                and day_counter == int(end_day):
             create_directory(year_counter, months[month_counter - 1],
                              day_counter, option)
             print('############ Congratulations!! '
@@ -80,14 +82,13 @@ def parse_year_month_day(start: datetime, end: datetime, option: str) -> None:
             create_directory(year_counter, months[month_counter - 1],
                              day_counter, option)
             day_counter += 1
-            pass
 
         # create 29th day directory when it is a leap year
         if day_counter > max_dates[month_counter - 1]:
             if month_counter == 2 and check_leapyear(year_counter):
                 create_directory(year_counter, months[month_counter - 1],
                                  day_counter, option)
-            # increase month counter and set day to start of the month
+        # increase month counter and set day to start of the month
             month_counter += 1
             day_counter = 1
 
@@ -95,4 +96,3 @@ def parse_year_month_day(start: datetime, end: datetime, option: str) -> None:
         if month_counter > 12:
             year_counter += 1
             month_counter = 1
-
